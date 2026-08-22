@@ -1,0 +1,146 @@
+/* ================================================================
+   COMMON COMPONENTS — 3D Enhanced
+   ================================================================ */
+
+/* ── Loading Spinner ── */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 20px;
+  position: relative;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: spinner3dRotate 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+.spinner::before,
+.spinner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.spinner::before {
+  border-top-color: var(--primary);
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 12px rgba(var(--primary-rgb), 0.2);
+}
+
+.spinner::after {
+  border-bottom-color: var(--secondary);
+  animation: spin 1.2s linear infinite reverse;
+  box-shadow: 0 0 12px rgba(var(--secondary-rgb), 0.2);
+  inset: 6px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spinner3dRotate {
+  0%, 100% { transform: perspective(200px) rotateX(0deg); }
+  50% { transform: perspective(200px) rotateX(180deg); }
+}
+
+.loading-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: loadingPulse 2s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ── Error State ── */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 16px;
+  padding: 40px 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 12px rgba(239, 68, 68, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.03);
+  animation: scaleIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.error-icon {
+  font-size: 2.8rem;
+  color: var(--accent2);
+  animation: errorBounce 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.2s both;
+  filter: drop-shadow(0 4px 8px rgba(239, 68, 68, 0.2));
+}
+
+@keyframes errorBounce {
+  0% { transform: scale(0) rotate(-20deg); }
+  60% { transform: scale(1.15) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.error-message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+/* ── Empty State ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.empty-icon {
+  font-size: 3.5rem;
+  color: var(--text-muted);
+  animation: emptyFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.06));
+}
+
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-8px) rotate(3deg); }
+  66% { transform: translateY(-4px) rotate(-2deg); }
+}
+
+.empty-state h3 {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.empty-state p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 360px;
+  line-height: 1.6;
+}

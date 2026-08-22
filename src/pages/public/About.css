@@ -1,0 +1,246 @@
+/* ================================================================
+   ABOUT PAGE — 3D Enhanced
+   ================================================================ */
+.about-page {
+  min-height: calc(100vh - 64px);
+  background: var(--surface-alt);
+}
+
+/* ── Hero ── */
+.about-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, var(--secondary) 100%);
+  padding: 130px 24px 70px;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated orbs in hero */
+.about-hero::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+  top: -100px;
+  right: -50px;
+  animation: aboutOrb1 8s ease-in-out infinite;
+}
+.about-hero::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  bottom: -60px;
+  left: -40px;
+  animation: aboutOrb2 10s ease-in-out infinite;
+}
+@keyframes aboutOrb1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 25px) scale(1.08); }
+}
+@keyframes aboutOrb2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -20px) scale(1.05); }
+}
+
+.about-hero-content {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  animation: slideInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.about-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  color: #60a5fa;
+}
+
+.about-hero p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  opacity: 0.9;
+  color: #1e293b;
+}
+
+/* ── Container ── */
+.about-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.about-section {
+  margin-bottom: 48px;
+  animation: slideInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.about-section h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.about-section > p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ── Features Grid ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.about-feature-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 28px;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.03),
+    0 4px 16px rgba(var(--primary-rgb), 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient reveal on hover */
+.about-feature-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary), var(--secondary-light));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.about-feature-card:hover {
+  transform: translateY(-8px) rotateX(2deg);
+  box-shadow:
+    0 8px 16px rgba(var(--primary-rgb), 0.08),
+    0 24px 56px rgba(0, 0, 0, 0.06);
+}
+
+.about-feature-card:hover::after {
+  opacity: 1;
+}
+
+.about-feature-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--secondary-rgb), 0.1));
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: featureIconFloat 5s ease-in-out infinite;
+}
+
+@keyframes featureIconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.about-feature-card:hover .about-feature-icon {
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15);
+}
+
+.about-feature-card h3 {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.about-feature-card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Tech Stack ── */
+.tech-stack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tech-stack-item {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-stack-item:hover {
+  transform: translateY(-3px) scale(1.04);
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.06), rgba(var(--secondary-rgb), 0.03));
+  border-color: var(--primary-light);
+  color: var(--primary);
+  box-shadow:
+    0 4px 12px rgba(var(--primary-rgb), 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .about-hero {
+  background: linear-gradient(135deg, rgba(var(--secondary-rgb), 0.4), #4c1d95, #5b21b6);
+}
+[data-theme="dark"] .about-container { background: var(--surface); }
+[data-theme="dark"] .about-section h2 { color: var(--text-primary); }
+[data-theme="dark"] .about-feature-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(51, 65, 85, 0.5);
+}
+[data-theme="dark"] .about-feature-card:hover { background: rgba(30, 41, 59, 0.95); }
+[data-theme="dark"] .about-feature-card h3 { color: var(--text-primary); }
+[data-theme="dark"] .tech-stack-item {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(51, 65, 85, 0.5);
+  color: var(--text-muted);
+}
+[data-theme="dark"] .tech-stack-item:hover {
+  background: rgba(var(--primary-rgb), 0.15);
+  border-color: rgba(var(--primary-rgb), 0.3);
+  color: var(--primary-light);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .about-hero { padding: 110px 24px 50px; }
+  .about-hero h1 { font-size: 1.8rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .about-container { padding: 40px 16px; }
+}

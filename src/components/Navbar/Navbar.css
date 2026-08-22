@@ -1,0 +1,239 @@
+/* ================================================================
+   NAVBAR — Professional 3D Glass Navbar
+   ================================================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--surface-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--surface-glass-border);
+  height: 64px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 4px 12px rgba(var(--primary-rgb), 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+/* ── Logo ── */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: transform 0.25s ease;
+}
+.navbar-logo:hover {
+  transform: scale(1.03);
+}
+
+.logo-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  box-shadow:
+    0 3px 0 var(--primary-dark),
+    0 5px 16px var(--primary-glow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: perspective(200px) rotateX(4deg);
+}
+.navbar-logo:hover .logo-icon-wrap {
+  transform: perspective(200px) rotateX(0deg) translateY(-2px) scale(1.05);
+  box-shadow:
+    0 5px 0 var(--primary-dark),
+    0 8px 24px var(--primary-glow);
+}
+
+.logo-icon-inner {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #e0f2fe;
+  font-family: 'Fira Code', monospace;
+}
+
+.logo-highlight {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Nav links ── */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.nav-link {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.nav-link:hover {
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.08);
+}
+
+/* Active state */
+.nav-link-active {
+  color: var(--primary) !important;
+  background: rgba(var(--primary-rgb), 0.12) !important;
+  font-weight: 600;
+}
+
+/* ── Actions (dark mode toggle + hamburger) ── */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+.theme-toggle:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.08);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+.theme-toggle:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--text-primary);
+  width: 38px;
+  height: 38px;
+  transition: all 0.3s ease;
+}
+.hamburger:hover {
+  border-color: var(--primary-light);
+  color: var(--primary);
+  transform: scale(1.08);
+}
+
+.mobile-overlay {
+  display: none;
+}
+
+/* ================================================================
+   DARK MODE
+   ================================================================ */
+/* Dark mode handled by CSS variables */
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .navbar-menu {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--surface-glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 24px;
+    gap: 8px;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+  }
+
+  .navbar-menu.active { transform: translateX(0); }
+
+  .navbar-links { flex-direction: column; gap: 4px; }
+
+  .nav-link {
+    padding: 14px 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+  }
+
+
+}
