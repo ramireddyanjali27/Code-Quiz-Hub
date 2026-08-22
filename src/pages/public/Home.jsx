@@ -79,9 +79,9 @@ const Home = () => {
         <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Test Your <span className="hl">Skills.</span><br />
-              Improve Your <span className="hl">Code.</span><br />
-              Master <span className="hl">Technology.</span>
+              Test Your <span style={{color: '#0f172a'}}>Skills.</span><br />
+              Improve Your <span style={{color: '#0f172a'}}>Code.</span><br />
+              Master <span style={{color: '#0f172a'}}>Technology.</span>
             </h1>
             <p className="hero-subtitle">
               Practice technical quizzes, evaluate your programming
