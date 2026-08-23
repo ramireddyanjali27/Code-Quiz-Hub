@@ -1,7 +1,16 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { FiClock, FiHelpCircle, FiFilter } from 'react-icons/fi';
-import { TECHNOLOGIES, DIFFICULTY_LEVELS } from '../../utils/constants';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import {
+  FiClock,
+  FiHelpCircle,
+  FiFilter,
+  FiTarget,
+  FiAward,
+  FiRefreshCw,
+} from 'react-icons/fi';
+import { DIFFICULTY_LEVELS } from '../../utils/constants';
+import { QUIZZES, QUIZ_TYPES, getQuestionsForQuiz } from '../../data/quizzes';
+import { getQuizStats } from '../../utils/quizStats';
 import EmptyState from '../../components/Common/EmptyState';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 import './Quizzes.css';
@@ -21,9 +30,14 @@ const floatingTokens = [
 ];
 
 /* ─── Quiz Card with mouse-follow 3D tilt ─── */
-function QuizCard3D({ quiz, index, getDifficultyColor, getTechIcon }) {
+function QuizCard3D({ quiz, index, getDifficultyColor }) {
   const cardRef = useRef(null);
   const shineRef = useRef(null);
+
+  // Per-user attempt history — practice identity lives here
+  const stats = getQuizStats(quiz.id);
+  const attempted = stats.attempts > 0;
+  const questionCount = getQuestionsForQuiz(quiz.id).length;
 
   const handleMouseMove = useCallback((e) => {
     const card = cardRef.current;
@@ -48,12 +62,8 @@ function QuizCard3D({ quiz, index, getDifficultyColor, getTechIcon }) {
 
   const handleMouseLeave = useCallback(() => {
     const card = cardRef.current;
-    if (card) {
-      card.style.transform = '';
-    }
-    if (shineRef.current) {
-      shineRef.current.style.opacity = '0';
-    }
+    if (card) card.style.transform = '';
+    if (shineRef.current) shineRef.current.style.opacity = '0';
   }, []);
 
   return (
@@ -66,11 +76,8 @@ function QuizCard3D({ quiz, index, getDifficultyColor, getTechIcon }) {
     >
       <div ref={shineRef} className="card-shine" />
       <div className="quiz-card-header">
-        <span className="quiz-tech-badge">
-          <span className="quiz-tech-icon-wrap">
-            {getTechIcon(quiz.technology)}
-          </span>
-          {quiz.technology}
+        <span className={`quiz-type-chip type-${quiz.quizType.toLowerCase().replace(/\s+/g, '-')}`}>
+          <FiTarget size={11} /> {quiz.quizType}
         </span>
         <span
           className="quiz-diff-badge"
@@ -83,19 +90,32 @@ function QuizCard3D({ quiz, index, getDifficultyColor, getTechIcon }) {
           {quiz.difficulty.charAt(0) + quiz.difficulty.slice(1).toLowerCase()}
         </span>
       </div>
+
       <h3 className="quiz-title">{quiz.title}</h3>
+
       <div className="quiz-meta">
-        <span>
-          <FiHelpCircle /> {quiz.totalQuestions} Questions
-        </span>
-        <span>
-          <FiClock /> {quiz.duration} min
-        </span>
+        <span><FiHelpCircle /> {questionCount} Questions</span>
+        <span><FiClock /> {quiz.duration} min</span>
+        {attempted && (
+          <span className="quiz-attempts"><FiRefreshCw /> {stats.attempts} attempt{stats.attempts !== 1 ? 's' : ''}</span>
+        )}
       </div>
+
+      {/* Best score — only after first practice */}
+      {attempted && (
+        <div className={`quiz-best-row ${stats.bestScore >= quiz.passingScore ? 'passed' : 'failed'}`}>
+          <span>Best Score</span>
+          <strong>{stats.bestScore}%{stats.bestScore >= quiz.passingScore ? ' 🏅' : ''}</strong>
+        </div>
+      )}
+
       <div className="quiz-card-footer">
         <span className="quiz-passing">Pass: {quiz.passingScore}%</span>
-        <Link to={`/quiz/${quiz.id}`} className="btn btn-primary btn-sm quiz-start-btn">
-          Start Quiz
+        <Link
+          to={`/quiz/${quiz.id}`}
+          className={`btn btn-sm quiz-start-btn ${attempted ? 'btn-outline' : 'btn-primary'}`}
+        >
+          {attempted ? 'Practice Again' : 'Start Practicing'}
         </Link>
       </div>
     </div>
@@ -104,116 +124,39 @@ function QuizCard3D({ quiz, index, getDifficultyColor, getTechIcon }) {
 
 /* ─── Main Quizzes Page ─── */
 const Quizzes = () => {
-  const [quizzes] = useState([
-    {
-      id: 1,
-      title: 'Java OOP Basics',
-      technology: 'Java',
-      difficulty: 'BEGINNER',
-      totalQuestions: 15,
-      duration: 10,
-      passingScore: 60,
-    },
-    {
-      id: 2,
-      title: 'JavaScript ES6+ Features',
-      technology: 'JavaScript',
-      difficulty: 'INTERMEDIATE',
-      totalQuestions: 20,
-      duration: 15,
-      passingScore: 65,
-    },
-    {
-      id: 3,
-      title: 'Data Structures - Arrays & Linked Lists',
-      technology: 'Data Structures',
-      difficulty: 'ADVANCED',
-      totalQuestions: 25,
-      duration: 20,
-      passingScore: 70,
-    },
-    {
-      id: 4,
-      title: 'Python Fundamentals',
-      technology: 'Python',
-      difficulty: 'BEGINNER',
-      totalQuestions: 15,
-      duration: 10,
-      passingScore: 60,
-    },
-    {
-      id: 5,
-      title: 'Spring Boot REST APIs',
-      technology: 'Spring Boot',
-      difficulty: 'INTERMEDIATE',
-      totalQuestions: 18,
-      duration: 15,
-      passingScore: 65,
-    },
-    {
-      id: 6,
-      title: 'React Hooks & Components',
-      technology: 'React',
-      difficulty: 'INTERMEDIATE',
-      totalQuestions: 20,
-      duration: 15,
-      passingScore: 65,
-    },
-    {
-      id: 7,
-      title: 'SQL Queries & Joins',
-      technology: 'SQL',
-      difficulty: 'BEGINNER',
-      totalQuestions: 15,
-      duration: 10,
-      passingScore: 60,
-    },
-    {
-      id: 8,
-      title: 'Algorithms - Sorting & Searching',
-      technology: 'Algorithms',
-      difficulty: 'ADVANCED',
-      totalQuestions: 20,
-      duration: 20,
-      passingScore: 70,
-    },
-    {
-      id: 9,
-      title: 'Java Collections Framework',
-      technology: 'Java',
-      difficulty: 'INTERMEDIATE',
-      totalQuestions: 15,
-      duration: 12,
-      passingScore: 65,
-    },
-  ]);
+  const [searchParams] = useSearchParams();
 
-  const [filteredQuizzes, setFilteredQuizzes] = useState(quizzes);
-  const [selectedTech, setSelectedTech] = useState('All');
-  const [selectedDiff, setSelectedDiff] = useState('All');
+  const [selectedTech, setSelectedTech] = useState(searchParams.get('technology') || 'All');
+  const [selectedDiff, setSelectedDiff] = useState(searchParams.get('difficulty') || 'All');
+  // Default type filter comes from ?type= too (e.g. from dashboard weak-topic links)
+  const [selectedType, setSelectedType] = useState(searchParams.get('type') || 'All');
   const [loading] = useState(false);
+  const [tick, setTick] = useState(0);
   const filterRef = useRef(null);
   const gridRef = useRef(null);
 
+  // Derived during render — no state/effect needed
+  const filteredQuizzes = useMemo(() => {
+    let result = QUIZZES;
+    if (selectedTech !== 'All') result = result.filter((q) => q.technology === selectedTech);
+    if (selectedDiff !== 'All') result = result.filter((q) => q.difficulty === selectedDiff);
+    if (selectedType !== 'All') result = result.filter((q) => q.quizType === selectedType);
+    return result;
+  }, [selectedTech, selectedDiff, selectedType]);
+
+  /* Refresh cards when returning from a quiz (attempts changed) */
   useEffect(() => {
-    let result = quizzes;
-    if (selectedTech !== 'All') {
-      result = result.filter((q) => q.technology === selectedTech);
-    }
-    if (selectedDiff !== 'All') {
-      result = result.filter((q) => q.difficulty === selectedDiff);
-    }
-    setFilteredQuizzes(result);
-  }, [selectedTech, selectedDiff, quizzes]);
+    const onFocus = () => setTick((n) => n + 1);
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, []);
 
   /* ── Scroll-triggered entrance animations ── */
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('quiz-card-visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('quiz-card-visible');
         });
       },
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
@@ -221,29 +164,24 @@ const Quizzes = () => {
 
     const cards = gridRef.current?.querySelectorAll('.quiz-card-3d');
     cards?.forEach((card) => observer.observe(card));
-
     const filterEl = filterRef.current;
     if (filterEl) observer.observe(filterEl);
 
     return () => observer.disconnect();
-  }, [filteredQuizzes]);
+  }, [filteredQuizzes, tick]);
 
-  const techNames = ['All', ...new Set(quizzes.map((q) => q.technology))];
+  const techNames = ['All', ...new Set(QUIZZES.map((q) => q.technology))];
   const diffOptions = ['All', ...DIFFICULTY_LEVELS.map((d) => d.value)];
+  const typeOptions = ['All', ...QUIZ_TYPES.map((t) => t.value)];
 
   const getDifficultyColor = (diff) => {
     const level = DIFFICULTY_LEVELS.find((d) => d.value === diff);
     return level ? level.color : '#6366f1';
   };
 
-  const getTechIcon = (techName) => {
-    const tech = TECHNOLOGIES.find((t) => t.name === techName);
-    return tech ? tech.icon : '📝';
-  };
-
   return (
     <div className="quizzes-page">
-      {/* ── Animated 3D background ── */}
+      {/* ── Animated background ── */}
       <div className="quizzes-bg-layer" aria-hidden="true">
         <div className="quizzes-bg-orb quizzes-bg-orb--1" />
         <div className="quizzes-bg-orb quizzes-bg-orb--2" />
@@ -267,51 +205,60 @@ const Quizzes = () => {
       </div>
 
       <div className="page-container quizzes-content">
-        {/* ── Page header ── */}
+        {/* ── Page header — PRACTICE purpose ── */}
         <div className="page-header quizzes-header">
-          <h1>
-            Browse <span style={{color: '#0f172a', fontWeight: 700}}>Quizzes</span>
-          </h1>
+          <span className="page-badge">🎯 Practice & Test</span>
+          <h1>Practice Quizzes.<br />Sharpen Your Skills.</h1>
           <p>
-            Test your knowledge with timed quizzes across multiple technologies
+            Timed questions with instant scoring and weak-topic analysis.
+            Learn the theory in <Link to="/technologies" className="quizzes-inline-learn-link">Technologies</Link>, then prove it here.
           </p>
+        </div>
+
+        {/* ── Type chips ── */}
+        <div className="quiz-type-chips" role="group" aria-label="Filter by quiz type">
+          {typeOptions.map((type) => (
+            <button
+              key={type}
+              className={`qt-chip ${selectedType === type ? 'active' : ''}`}
+              onClick={() => setSelectedType(type)}
+            >
+              {type === 'All' ? 'All Types' : type}
+            </button>
+          ))}
         </div>
 
         {/* ── Filters ── */}
         <div className="quiz-filters quiz-filters-3d" ref={filterRef}>
           <div className="filter-group">
             <FiFilter className="filter-icon" />
-            <label>Technology:</label>
+            <label htmlFor="tech-filter">Technology:</label>
             <select
+              id="tech-filter"
               value={selectedTech}
               onChange={(e) => setSelectedTech(e.target.value)}
             >
               {techNames.map((tech) => (
-                <option key={tech} value={tech}>
-                  {tech}
-                </option>
+                <option key={tech} value={tech}>{tech}</option>
               ))}
             </select>
           </div>
           <div className="filter-group">
-            <label>Difficulty:</label>
+            <label htmlFor="diff-filter">Difficulty:</label>
             <select
+              id="diff-filter"
               value={selectedDiff}
               onChange={(e) => setSelectedDiff(e.target.value)}
             >
               {diffOptions.map((diff) => (
                 <option key={diff} value={diff}>
-                  {diff === 'All'
-                    ? 'All Levels'
-                    : diff.charAt(0) + diff.slice(1).toLowerCase()}
+                  {diff === 'All' ? 'All Levels' : diff.charAt(0) + diff.slice(1).toLowerCase()}
                 </option>
               ))}
             </select>
           </div>
           <div className="filter-result">
-            <span className="filter-count-badge">
-              {filteredQuizzes.length}
-            </span>{' '}
+            <span className="filter-count-badge">{filteredQuizzes.length}</span>{' '}
             quiz{filteredQuizzes.length !== 1 ? 'zes' : ''} found
           </div>
         </div>
@@ -321,22 +268,26 @@ const Quizzes = () => {
           <LoadingSpinner text="Loading quizzes..." />
         ) : filteredQuizzes.length === 0 ? (
           <EmptyState
+            icon={<FiAward size={54} />}
             title="No quizzes found"
-            message="Try changing your filters to see more quizzes."
+            message="Try changing your filters — or explore learning roadmaps instead."
           />
         ) : (
           <div className="quiz-list-grid quiz-grid-3d" ref={gridRef}>
             {filteredQuizzes.map((quiz, index) => (
-              <QuizCard3D
-                key={quiz.id}
-                quiz={quiz}
-                index={index}
-                getDifficultyColor={getDifficultyColor}
-                getTechIcon={getTechIcon}
-              />
+              <QuizCard3D key={`${quiz.id}-${tick}`} quiz={quiz} index={index} getDifficultyColor={getDifficultyColor} />
             ))}
           </div>
         )}
+
+        {/* ── Cross-link banner back to learning ── */}
+        <div className="quiz-learn-banner">
+          <div>
+            <strong>New to a topic?</strong>
+            <p>Don't jump into tests cold — follow the roadmap in Technologies first, then come back and measure your progress here.</p>
+          </div>
+          <Link to="/technologies" className="btn btn-primary">Explore Learning Paths</Link>
+        </div>
       </div>
     </div>
   );

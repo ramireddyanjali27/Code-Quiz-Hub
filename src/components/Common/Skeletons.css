@@ -1,0 +1,118 @@
+/* ================================================================
+   SKELETON LOADERS
+   ================================================================ */
+.sk-box {
+  background: linear-gradient(
+    90deg,
+    var(--border-light) 25%,
+    var(--border) 45%,
+    var(--border-light) 65%
+  );
+  background-size: 200% 100%;
+  animation: skShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Card grid skeleton ── */
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.sk-card {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: 22px;
+  padding: 26px;
+}
+
+.sk-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sk-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* ── Roadmap skeleton ── */
+.sk-roadmap {
+  position: relative;
+  padding: 12px 0;
+}
+.sk-roadmap::before {
+  content: '';
+  position: absolute;
+  left: 27px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--border-light);
+}
+
+.sk-roadmap-item {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 22px;
+  align-items: center;
+}
+
+.sk-roadmap-node {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--border-light);
+  animation: skShimmer 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.sk-roadmap-card {
+  flex: 1;
+  max-width: 420px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+/* ── Video skeleton ── */
+.sk-video-screen {
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  background: var(--border-light);
+  animation: skShimmer 1.4s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sk-play-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--border);
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-box,
+  .sk-video-screen,
+  .sk-play-btn,
+  .sk-roadmap-node {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .sk-grid { grid-template-columns: 1fr; }
+}

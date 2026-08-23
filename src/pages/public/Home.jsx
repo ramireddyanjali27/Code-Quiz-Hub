@@ -11,14 +11,19 @@ import {
   FiChevronRight,
 } from 'react-icons/fi';
 import { TECHNOLOGIES } from '../../utils/constants';
+import { getQuizById } from '../../data/quizzes';
+import SpinWheel from '../../components/Home/SpinWheel';
 import './Home.css';
 
-/* ── Quiz data (matches Quizzes.jsx) ── */
-const POPULAR_QUIZZES = [
-  { id: 1, title: 'Java OOP Basics', technology: 'Java', icon: '☕', color: '#f89820', difficulty: 'BEGINNER', totalQuestions: 15, duration: 10, passingScore: 60 },
-  { id: 2, title: 'JavaScript ES6+ Features', technology: 'JavaScript', icon: '⚡', color: '#F7DF1E', difficulty: 'INTERMEDIATE', totalQuestions: 20, duration: 15, passingScore: 65 },
-  { id: 3, title: 'Data Structures — Arrays & Linked Lists', technology: 'Data Structures', icon: '🧠', color: '#8B5CF6', difficulty: 'ADVANCED', totalQuestions: 25, duration: 20, passingScore: 70 },
-];
+/* ── Popular quizzes pulled from the shared catalog (src/data/quizzes.js) ── */
+const POPULAR_QUIZZES = [1, 2, 3]
+  .map((id) => {
+    const q = getQuizById(id);
+    if (!q) return null;
+    const tech = TECHNOLOGIES.find((t) => t.name === q.technology);
+    return { ...q, icon: tech?.icon || '📝', color: tech?.color || '#6366f1' };
+  })
+  .filter(Boolean);
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -79,21 +84,21 @@ const Home = () => {
         <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Test Your <span style={{color: '#0f172a'}}>Skills.</span><br />
-              Improve Your <span style={{color: '#0f172a'}}>Code.</span><br />
+              Learn to <span style={{color: '#0f172a'}}>Code.</span><br />
+              Practice Your <span style={{color: '#0f172a'}}>Skills.</span><br />
               Master <span style={{color: '#0f172a'}}>Technology.</span>
             </h1>
             <p className="hero-subtitle">
-              Practice technical quizzes, evaluate your programming
-              knowledge, and prepare for interviews.
+              Follow guided roadmaps with videos, assignments and coding
+              practice — then prove your knowledge with timed technical quizzes.
             </p>
             <div className="hero-actions">
-              <Link to="/quizzes" className="btn btn-primary btn-lg hero-btn-primary">
-                🚀 Explore Quizzes
+              <Link to="/technologies" className="btn btn-primary btn-lg hero-btn-primary">
+                🚀 Start Learning
               </Link>
-              <a href="#how-it-works" className="hero-btn-secondary">
-                <span className="play-icon">▶</span> How it works
-              </a>
+              <Link to="/quizzes" className="btn btn-outline-light btn-lg">
+                🎯 Practice Quizzes
+              </Link>
             </div>
           </div>
 
@@ -240,6 +245,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* ═══════════════ DAILY CHALLENGE — 3D SPIN WHEEL ═══════════════ */}
+      <SpinWheel />
 
       {/* ═══════════════ HOW IT WORKS ═══════════════ */}
       <section className="section how-section" id="how-it-works">

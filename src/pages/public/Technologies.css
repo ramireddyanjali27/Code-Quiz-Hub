@@ -476,6 +476,140 @@
   }
 }
 
+/* ── Inline quiz link in header ── */
+.tech-inline-quiz-link {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--primary-rgb), 0.35);
+  text-underline-offset: 3px;
+}
+.tech-inline-quiz-link:hover { color: var(--primary-hover); }
+
+/* ── Card meta row (modules / hours) ── */
+.tech-meta-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+.tech-meta-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.tech-meta-row svg { color: var(--tech-color, var(--primary)); opacity: 0.85; }
+
+/* ── Learning progress bar on card ── */
+.tech-progress {
+  margin-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+.tech-progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.tech-progress-head span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.tech-progress-head strong {
+  font-size: 0.8rem;
+  color: var(--tech-color, var(--primary));
+  font-weight: 800;
+}
+.tech-progress-track {
+  height: 7px;
+  border-radius: 99px;
+  background: rgba(148, 163, 184, 0.18);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.tech-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--tech-color, var(--primary)), color-mix(in srgb, var(--tech-color, #0ea5e9) 60%, #fff));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--tech-color, #0ea5e9) 45%, transparent);
+  transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+.tech-progress-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  animation: techProgressShine 2.4s ease-in-out infinite;
+}
+@keyframes techProgressShine {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(200%); }
+}
+.tech-progress-fill.empty { width: 0 !important; }
+
+/* ── Card CTA ── */
+.tech-cta-btn {
+  margin-top: 16px;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+[data-theme='dark'] .tech-progress-track {
+  background: rgba(51, 65, 85, 0.6);
+}
+[data-theme='dark'] .tech-progress-fill.empty { width: 0; }
+
+/* ── Cross-link banner to Quizzes ── */
+.tech-quiz-banner {
+  margin-top: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 26px 30px;
+  border-radius: 20px;
+  background: var(--surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px dashed rgba(var(--secondary-rgb), 0.4);
+  position: relative;
+  z-index: 2;
+}
+.tqb-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.tqb-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 4px 8px rgba(var(--secondary-rgb), 0.25));
+}
+.tqb-left h3 {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.tqb-left p {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  margin-top: 3px;
+}
+.tqb-btn { white-space: nowrap; }
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .tech-grid-full {
@@ -493,6 +627,8 @@
   .tech-stat-item { padding: 10px 16px; }
   .tech-float-el { display: none; }
   .tech-bg-orb-3 { display: none; }
+  .tech-quiz-banner { padding: 20px; flex-direction: column; align-items: stretch; text-align: left; }
+  .tqb-btn { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 480px) {

@@ -13,9 +13,9 @@
   --primary-rgb: 14, 165, 233;
 
   /* Secondary — Violet + Purple */
-  --secondary: var(--secondary);
+  --secondary: #8b5cf6;
   --secondary-hover: #7c3aed;
-  --secondary-light: var(--secondary-light);
+  --secondary-light: #a78bfa;
   --secondary-glow: rgba(var(--secondary-rgb), 0.25);
   --secondary-rgb: 139, 92, 246;
 
@@ -55,7 +55,7 @@
   --gradient-accent: linear-gradient(135deg, #10b981, #06b6d4);
   --gradient-warm: linear-gradient(135deg, #f43f5e, #f97316);
   --gradient-hero: linear-gradient(170deg, #f0f9ff 0%, #ede9fe 35%, #f0fdf4 65%, #eff6ff 100%);
-  --gradient-dark: linear-gradient(170deg, #0c1222 0%, #1a1040 40%, #0c1222 100%);
+  --gradient-dark: linear-gradient(170deg, #07111f 0%, #0b172a 45%, #101c33 75%, #07111f 100%);
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -79,9 +79,9 @@
   --primary-light: #7dd3fc;
   --primary-glow: rgba(56, 189, 248, 0.3);
   --primary-rgb: 56, 189, 248;
-  --secondary: var(--secondary-light);
-  --secondary-hover: var(--secondary);
-  --secondary-light: var(--secondary-light);
+  --secondary: #a78bfa;
+  --secondary-hover: #8b5cf6;
+  --secondary-light: #c4b5fd;
   --secondary-glow: rgba(167, 139, 250, 0.3);
   --secondary-rgb: 167, 139, 250;
   --accent: #34d399;

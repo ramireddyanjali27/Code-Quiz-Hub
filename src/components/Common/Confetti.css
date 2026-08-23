@@ -1,0 +1,33 @@
+/* ================================================================
+   CONFETTI — 3D tumbling celebration overlay (one-shot)
+   ================================================================ */
+
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+  perspective: 900px;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -30px;
+  border-radius: 2px;
+  opacity: 0;
+  animation-name: confettiFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, -10vh, -400px) rotateX(0) rotateZ(0);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translate3d(var(--drift), 110vh, 120px) rotateX(var(--spin-x)) rotateZ(var(--spin-z));
+  }
+}

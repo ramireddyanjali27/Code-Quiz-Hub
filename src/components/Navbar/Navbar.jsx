@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 import './Navbar.css';
 
@@ -10,7 +10,6 @@ const Navbar = () => {
     return localStorage.getItem('cq-dark') === 'true';
   });
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -32,6 +31,7 @@ const Navbar = () => {
     { to: '/technologies', label: 'Technologies' },
     { to: '/quizzes', label: 'Quizzes' },
     { to: '/leaderboard', label: 'Leaderboard' },
+    { to: '/achievements', label: 'Achievements' },
     { to: '/about', label: 'About' },
   ];
 
